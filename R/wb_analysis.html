@@ -369,7 +369,33 @@ summary {
 </div>
 
 
-
+<div id="read-in-data" class="section level2">
+<h2>Read in data</h2>
+<pre class="r"><code>wb_pop &lt;- read_csv(here(&quot;data&quot;,&quot;world_bank_pop.csv&quot;))</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   country = col_character(),
+##   indicator = col_character()
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+</div>
+<div id="make-it-tidy" class="section level2">
+<h2>Make it tidy</h2>
+<ul>
+<li>pivot_longer()</li>
+</ul>
+<pre class="r"><code>wb_pop_long &lt;- wb_pop %&gt;% 
+  pivot_longer(cols = &#39;2000&#39;:&#39;2017&#39;,
+               names_to = &quot;year&quot;,
+               values_to = &quot;population&quot;)</code></pre>
+<p>Now split the indicator column into 2 separate variables</p>
+<pre class="r"><code>wb_pop_tidy &lt;- wb_pop_long %&gt;% 
+  pivot_wider(names_from = indicator,
+              values_from = population) %&gt;% 
+  clean_names() %&gt;% 
+  mutate(year = as.numeric(year))</code></pre>
+</div>
 
 
 

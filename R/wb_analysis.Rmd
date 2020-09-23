@@ -7,5 +7,35 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+## Read in data
+
+```{r}
+wb_pop <- read_csv(here("data","world_bank_pop.csv"))
+```
+
+## Make it tidy
+
+- pivot_longer()
+
+```{r}
+wb_pop_long <- wb_pop %>% 
+  pivot_longer(cols = '2000':'2017',
+               names_to = "year",
+               values_to = "population")
+```
+
+Now split the indicator column into 2 separate variables
+
+```{r}
+wb_pop_tidy <- wb_pop_long %>% 
+  pivot_wider(names_from = indicator,
+              values_from = population) %>% 
+  clean_names() %>% 
+  mutate(year = as.numeric(year))
 ```
 

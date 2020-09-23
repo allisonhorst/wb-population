@@ -39,3 +39,15 @@ wb_pop_tidy <- wb_pop_long %>%
   mutate(year = as.numeric(year))
 ```
 
+## Make a graph for countries w/top5 populations in 2020
+
+```{r}
+top5_pop <- wb_pop_tidy %>% 
+  filter(country %in% c("CHN", "IND", "USA", "IDN", "BRA"))
+```
+
+```{r}
+ggplot(data = top5_pop, aes(x = year, y = total_population)) +
+  geom_line(aes(color = country))
+```
+
